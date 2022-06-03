@@ -25,9 +25,12 @@ export interface Schema extends FieldSet {
 export type MarketPlaceOffer = decodeType<typeof decodeMarketPlaceOffer>;
 export const decodeMarketPlaceOffer = record({
   id: string,
+  name: string,
   owner: relationToOne,
   ownerName: relationToOne,
   ownerEmail: relationToOne,
+  ownerAvatarUrl: relationToOne,
+  ownerSlackId: relationToOne,
   text: string,
   createdAt: string,
   lastModifiedAt: string,
