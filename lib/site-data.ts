@@ -12,6 +12,10 @@ import {
   PortalProject,
   PortalUser,
 } from "./portal-types";
+import {
+  getAllMarketPlaceOffers,
+  MarketPlaceOffer,
+} from "./airtable/market-place";
 
 enableAPMLogging();
 
@@ -24,6 +28,7 @@ export interface SiteData {
   videos: readonly PortalVideo[];
   blogPosts: readonly Article[];
   skills: readonly Field[];
+  marketPlaceOffers: readonly MarketPlaceOffer[];
 }
 
 type Async<T> = () => Promise<T>;
@@ -37,6 +42,7 @@ interface DataSource {
   videos: Async<PortalVideo[]>;
   blogPosts: Async<Article[]>;
   skills: Async<Field[]>;
+  marketPlaceOffers: Async<MarketPlaceOffer[]>;
 }
 
 const ProductionDataSource: DataSource = {
@@ -48,6 +54,7 @@ const ProductionDataSource: DataSource = {
   videos: getAllVideos,
   blogPosts: getArticleIndex,
   skills: getAllSkills,
+  marketPlaceOffers: getAllMarketPlaceOffers,
 };
 
 const SampleDataSource: DataSource = {
@@ -59,6 +66,7 @@ const SampleDataSource: DataSource = {
   videos: getAllVideos, // TODO
   blogPosts: getArticleIndex, // TODO
   skills: Local.getAllSkills,
+  marketPlaceOffers: Local.getAllMarketPlaceOffers,
 };
 
 async function loadSiteData(): Promise<SiteData> {
@@ -97,6 +105,7 @@ async function loadSiteData(): Promise<SiteData> {
     videos,
     blogPosts,
     skills,
+    marketPlaceOffers,
   ] = await Promise.all([
     dataSource.projects(),
     dataSource.opportunities(),
@@ -106,6 +115,7 @@ async function loadSiteData(): Promise<SiteData> {
     dataSource.videos(),
     dataSource.blogPosts(),
     dataSource.skills(),
+    dataSource.marketPlaceOffers(),
   ]);
 
   apm.endTransaction();
@@ -127,6 +137,7 @@ async function loadSiteData(): Promise<SiteData> {
     opportunities,
     users,
     events,
+    marketPlaceOffers,
   });
 }
 
