@@ -13,7 +13,7 @@ import {
   PortalUser,
 } from "./portal-types";
 import {
-  getAllMarketPlaceOffers,
+  getPublishedMarketPlaceOffers,
   MarketPlaceOffer,
 } from "./airtable/market-place";
 
@@ -54,7 +54,7 @@ const ProductionDataSource: DataSource = {
   videos: getAllVideos,
   blogPosts: getArticleIndex,
   skills: getAllSkills,
-  marketPlaceOffers: getAllMarketPlaceOffers,
+  marketPlaceOffers: getPublishedMarketPlaceOffers,
 };
 
 const SampleDataSource: DataSource = {
