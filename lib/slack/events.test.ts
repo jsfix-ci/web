@@ -57,6 +57,7 @@ test("Decode channel join message", () => {
   expect(decodeMessageEvent(payload)).toEqual({
     type: "message",
     subtype: "channel_join",
+    ts: "1654170771.468289",
     channel: "C03JP5VSC00",
     user: "U03HX745KM3",
     text: "<@U03HX745KM3> has joined the channel",
@@ -80,6 +81,7 @@ test("Decode regular channel message", () => {
   expect(decodeMessageEvent(payload)).toEqual({
     type: "message",
     channel: "C03JP5VSC00",
+    ts: "1654170796.530449",
     user: "UJJ3MNA91",
     text: "Bagr",
     channel_type: "channel",
@@ -104,6 +106,7 @@ test("Decode thread reply", () => {
   expect(decodeMessageEvent(payload)).toEqual({
     type: "message",
     channel: "C03JP5VSC00",
+    ts: "1654170815.647619",
     user: "UJJ3MNA91",
     text: "Lopata",
     channel_type: "channel",
@@ -134,6 +137,7 @@ test("Decode message change message", () => {
     subtype: "message_changed",
     channel: "C03JP5VSC00",
     channel_type: "channel",
+    ts: "1654172531.001700",
     user: undefined,
     text: undefined,
   });

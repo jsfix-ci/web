@@ -17,6 +17,7 @@ const userProfileTable = webBase<UserProfileSchema>("User Profiles");
 export interface Schema extends FieldSet {
   id: string;
   owner: ReadonlyArray<string>;
+  slackThreadUrl: string;
   state: string;
   text: string;
 }
@@ -25,6 +26,7 @@ export interface Schema extends FieldSet {
 export type MarketPlaceOffer = decodeType<typeof decodeMarketPlaceOffer>;
 export const decodeMarketPlaceOffer = record({
   id: string,
+  slackThreadUrl: string,
   owner: relationToOne,
   ownerName: relationToOne,
   ownerEmail: relationToOne,
@@ -59,9 +61,9 @@ export async function getAllMarketPlaceOffers(): Promise<MarketPlaceOffer[]> {
 
 /** Insert new market-place offer */
 export async function insertNewMarketPlaceOffer(
-  offer: Pick<MarketPlaceOffer, "state" | "text" | "owner">
+  offer: Pick<MarketPlaceOffer, "state" | "text" | "owner" | "slackThreadUrl">
 ): Promise<MarketPlaceOffer> {
-  const { state, text, owner } = offer;
+  const { state, text, owner, slackThreadUrl } = offer;
 
   // First find the matching owner profile in (synced) User Profiles
   const ownerProfileId = await userProfileTable
@@ -74,7 +76,7 @@ export async function insertNewMarketPlaceOffer(
 
   // Then insert the new offer
   return await marketPlaceTable
-    .create({ state, text, owner: [ownerProfileId] })
+    .create({ state, text, slackThreadUrl, owner: [ownerProfileId] })
     .then(unwrapRecord)
     .then(decodeMarketPlaceOffer);
 }

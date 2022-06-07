@@ -1,12 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { union } from "typescript-json-decoder";
 import { insertNewMarketPlaceOffer } from "lib/airtable/market-place";
+import { getMessagePermalink } from "lib/slack/messages";
 import {
   decodeEndpointHandshake,
   decodeEventCallback,
   decodeMessageEvent,
   isRegularNewThreadMessage,
 } from "lib/slack/events";
+
+const { SLACK_SYNC_TOKEN = "" } = process.env;
 
 /** Mark user account as confirmed when user successfully signs in to Slack */
 export default async function handler(
@@ -32,10 +35,16 @@ export default async function handler(
           isRegularNewThreadMessage(msg.event) &&
           msg.event.channel === "C03JP5VSC00"
         ) {
+          const messageUrl = await getMessagePermalink(
+            SLACK_SYNC_TOKEN,
+            msg.event.channel,
+            msg.event.ts
+          );
           await insertNewMarketPlaceOffer({
             state: "new",
             text: msg.event.text || "<no text in message>",
             owner: msg.event.user,
+            slackThreadUrl: messageUrl,
           });
         }
         response.status(204).end();

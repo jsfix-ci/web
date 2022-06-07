@@ -20,6 +20,7 @@ export type MessageEvent = decodeType<typeof decodeMessageEvent>;
 export const decodeMessageEvent = record({
   type: literal("message"),
   subtype: optional(string),
+  ts: string,
   channel: string,
   user: optional(string),
   text: optional(string),
