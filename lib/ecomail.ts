@@ -92,14 +92,13 @@ export async function subscribeToList(
     subscriber_data: { email, tags },
     resubscribe: true,
   };
-  const response = await fetch(
-    `https://api2.ecomailapp.cz/lists/${listId}/subscribe`,
-    {
-      method: "POST",
-      body: JSON.stringify(payload),
-      headers: jsonHeaders(apiKey),
-    }
-  );
+  const response = await /* TODO: JSFIX could not patch the breaking change:
+  req.body can no longer be a string*/
+  fetch(`https://api2.ecomailapp.cz/lists/${listId}/subscribe`, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: jsonHeaders(apiKey),
+  });
   return response.ok;
 }
 
@@ -109,14 +108,13 @@ export async function unsubscribeFromList(
   email: string,
   listId = newsletterListId
 ): Promise<boolean> {
-  const response = await fetch(
-    `https://api2.ecomailapp.cz/lists/${listId}/unsubscribe`,
-    {
-      method: "DELETE",
-      body: JSON.stringify({ email }),
-      headers: jsonHeaders(apiKey),
-    }
-  );
+  const response = await /* TODO: JSFIX could not patch the breaking change:
+  req.body can no longer be a string*/
+  fetch(`https://api2.ecomailapp.cz/lists/${listId}/unsubscribe`, {
+    method: "DELETE",
+    body: JSON.stringify({ email }),
+    headers: jsonHeaders(apiKey),
+  });
   return response.ok;
 }
 
@@ -148,7 +146,9 @@ async function addSingleBatchOfSubscribers(
     subscriber_data: emails.map((email) => ({ email })),
     update_existing: false,
   };
-  await fetch(`http://api2.ecomailapp.cz/lists/${listId}/subscribe-bulk`, {
+  await /* TODO: JSFIX could not patch the breaking change:
+  req.body can no longer be a string*/
+  fetch(`http://api2.ecomailapp.cz/lists/${listId}/subscribe-bulk`, {
     method: "POST",
     body: JSON.stringify(payload),
     headers: jsonHeaders(apiKey),
